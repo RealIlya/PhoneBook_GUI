@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter import ttk
 
-version = "v1.1.0001"
+version = "v1.1.0002"
 
 phone_book = dict()
 
@@ -25,7 +25,7 @@ def add():
 
 window = Tk()
 window.title("PhoneBook")
-window.geometry("400x200")
+window.geometry("550x200")
 
 label_tel = Label(text="Номер телефона")
 label_tel.grid(row=0, column=0, padx=10, pady=5, sticky="w")
@@ -62,5 +62,11 @@ button_add.grid(row=1, column=2, padx=38)
 
 button_clear = ttk.Button(text="Удалить", command=clear)
 button_clear.grid(row=3, column=2, padx=38)
+
+label_list_tel = Label(text="Список телефонов")
+label_list_tel.grid(row=0, column=3)
+
+list_tel = Listbox()
+list_tel.grid(row=1, column=3, rowspan=4)
 
 window.mainloop()
