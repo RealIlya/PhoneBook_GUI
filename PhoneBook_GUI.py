@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import ttk
+import os
 
 version = "v1.2.0001"
 
@@ -50,7 +51,7 @@ def select_list_tel(event):
 
 
 window = Tk()
-window.title("PhoneBook")
+window.title(f"PhoneBook {version}")
 window.geometry("550x240")
 
 label_tel = Label(text="Номер телефона")
@@ -98,6 +99,28 @@ label_list_tel.grid(row=0, column=3)
 list_tel = Listbox()
 list_tel.grid(row=1, column=3, rowspan=4)
 
+# <<ListboxSelect>> связывает Listbox и поля ввода
 list_tel.bind('<<ListboxSelect>>', select_list_tel)
+
+if os.path.exists("PhoneBook.csv"):
+    with open("PhoneBook.csv", "r") as file:
+        lines = file.readlines()
+        for line in lines:
+            elements = line.split(";")  # split игнорирует ;
+            # (номер);(имя);(фамилия);(отчество);(адрес)
+            tel = elements[0]
+            last_name = elements[1]
+            first_name = elements[2]
+            patronymic = elements[3]
+            address = elements[4]
+
+            value = list()
+            value.append(last_name)
+            value.append(first_name)
+            value.append(patronymic)
+            value.append(address)
+            phone_book[tel] = value
+
+            list_tel.insert(END, tel)
 
 window.mainloop()
