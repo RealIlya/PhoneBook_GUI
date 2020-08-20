@@ -1,9 +1,10 @@
 from tkinter import *
 from tkinter import ttk
 
-version = "v1.1.0002"
+version = "v1.2"
 
 phone_book = dict()
+tel_list = list()
 
 
 def clear():
@@ -15,17 +16,23 @@ def clear():
 
 
 def add():
-    value = list()
-    value.append(input_last_name.get())
-    value.append(input_first_name.get())
-    value.append(input_patronymic.get())
-    value.append(input_address.get())
-    phone_book[input_tel.get()] = value
+    tel = input_tel.get()
+    if tel in phone_book:
+        label_info.config(text="Такой номер уже существует")
+    else:
+        value = list()
+        value.append(input_last_name.get())
+        value.append(input_first_name.get())
+        value.append(input_patronymic.get())
+        value.append(input_address.get())
+        phone_book[tel] = value
+
+        list_tel.insert(END, tel)
 
 
 window = Tk()
 window.title("PhoneBook")
-window.geometry("550x200")
+window.geometry("550x240")
 
 label_tel = Label(text="Номер телефона")
 label_tel.grid(row=0, column=0, padx=10, pady=5, sticky="w")
@@ -55,7 +62,10 @@ label_address = Label(text="Адрес")
 label_address.grid(row=4, column=0, padx=10, pady=5, sticky="w")
 
 input_address = ttk.Entry()
-input_address.grid(row=4, column=1)
+input_address.grid(row=4, column=1, pady=10)
+
+label_info = Label(text="Программа готова к работе")
+label_info.grid(row=5, column=0, columnspan=4)
 
 button_add = ttk.Button(text="Добавить", command=add)
 button_add.grid(row=1, column=2, padx=38)
