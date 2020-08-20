@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter import ttk
 
-version = "v1.2"
+version = "v1.2.0001"
 
 phone_book = dict()
 tel_list = list()
@@ -18,7 +18,7 @@ def clear():
 def add():
     tel = input_tel.get()
     if tel in phone_book:
-        label_info.config(text="Такой номер уже существует")
+        label_info.config(text="! Такой номер уже существует !", fg="red")
     else:
         value = list()
         value.append(input_last_name.get())
@@ -28,6 +28,25 @@ def add():
         phone_book[tel] = value
 
         list_tel.insert(END, tel)
+
+
+def select_list_tel(event):
+    w = event.widget
+    i = int(w.curselection()[0])
+    tel = w.get(i)
+
+    value = phone_book[tel]
+    last_name = value[0]
+    first_name = value[1]
+    patronymic = value[2]
+    address = value[3]
+
+    clear()
+    input_tel.insert(0, tel)
+    input_last_name.insert(0, last_name)
+    input_first_name.insert(0, first_name)
+    input_patronymic.insert(0, patronymic)
+    input_address.insert(0, address)
 
 
 window = Tk()
@@ -64,7 +83,7 @@ label_address.grid(row=4, column=0, padx=10, pady=5, sticky="w")
 input_address = ttk.Entry()
 input_address.grid(row=4, column=1, pady=10)
 
-label_info = Label(text="Программа готова к работе")
+label_info = Label(text="Программа готова к работе...")
 label_info.grid(row=5, column=0, columnspan=4)
 
 button_add = ttk.Button(text="Добавить", command=add)
@@ -78,5 +97,7 @@ label_list_tel.grid(row=0, column=3)
 
 list_tel = Listbox()
 list_tel.grid(row=1, column=3, rowspan=4)
+
+list_tel.bind('<<ListboxSelect>>', select_list_tel)
 
 window.mainloop()
