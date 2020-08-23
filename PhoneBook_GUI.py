@@ -1,14 +1,24 @@
+import datetime
+import time
 from tkinter import *
 from tkinter import ttk
 import os
 
 version = "v1.4"
 
+date_time = datetime.datetime.now()
+
 phone_book = dict()
 tel_list = list()
 
 BUTTON_WIDTH = 15
 BUTTON_PADX = 30
+
+
+def log(msg):
+    with open("PhoneBook_GUI.log", "a") as file:
+        message = date_time.strftime("%Y-%m-%d %H:%M") + " -:- " + msg + "\n"
+        file.write(message)
 
 
 def clear():
@@ -34,16 +44,12 @@ def add():
         list_tel.insert(END, _tel_)
 
 
-def edit():
-    pass
-
-
 def save_in_file():
     with open("PhoneBook.csv", "w") as file:
         for tel in phone_book:
             value = phone_book[tel]
             temp = tel + ";" + value[0] + ";" + value[1] + \
-                   ";" + value[2] + ";" + "\n"
+                   ";" + value[2] + ";" + value[3] + ";" + "\n"
             file.write(temp)
 
 
@@ -68,6 +74,27 @@ def select_list_tel(event):
     tel = w.get(i)
 
     output_data(tel)
+
+
+def edit():
+    selection = list_tel.curselection()
+    list_tel.update()
+    _tel_ = input_tel.get()
+
+    if selection:
+        list_tel.delete(0)
+        _value_ = list()
+        _value_.append(input_last_name.get())
+        _value_.append(input_first_name.get())
+        _value_.append(input_patronymic.get())
+        _value_.append(input_address.get())
+        phone_book[_tel_] = _value_
+
+        list_tel.insert(_tel_)
+    # elif :
+    #     label_info.config(text="! Такой номер уже существует !", fg="red")
+
+
 
 
 def search():
